@@ -13,7 +13,11 @@ export const Navigator = ({ items }: NavigatorProps) => {
   return (
     <Space direction="horizontal" size="large">
       {items.map(({ label, ...linkProps }, idx) => (
-        <Link key={`nav-item-${idx}`} {...linkProps}>
+        <Link
+          key={`nav-item-${idx}`}
+          style={{ color: "white", fontWeight: 700 }}
+          {...linkProps}
+        >
           {label.toUpperCase()}
         </Link>
       ))}

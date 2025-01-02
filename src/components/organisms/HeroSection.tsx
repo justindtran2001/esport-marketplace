@@ -3,7 +3,6 @@ import { Flex } from "antd";
 import { useState } from "react";
 import { Category, Character } from "@/data/models";
 import { SpotlightCharacterCard } from "../molecules";
-import { Content } from "antd/es/layout/layout";
 
 export const HeroSection = () => {
   // TODO: Integrate data from API
@@ -29,33 +28,54 @@ export const HeroSection = () => {
   );
 
   return (
-    <Content>
-      <Flex
-        vertical
+    <Flex
+      vertical
+      style={{
+        position: "relative",
+        width: "100vw",
+        height: "45em",
+      }}
+    >
+      <img
+        src="/background-image.jpeg"
         style={{
-          width: "100vw",
+          position: "absolute",
+          width: "100%",
+          height: "40em",
+          objectFit: "contain",
+          filter: "opacity(30%)",
+          zIndex: 0,
         }}
+      />
+      <img
+        src="/newArrivalTitle.svg"
+        height="auto"
+        width="900rem"
+        style={{ position: "relative", left: "10em", top: "4em" }}
+      />
+      <Flex
+        style={{
+          backgroundColor: "rgba(251, 198, 37, 1)",
+          position: "absolute",
+          bottom: 0,
+          height: "18em",
+          width: "100%",
+        }}
+        gap="large"
+        justify="center"
       >
+        {characters.map(({ id, image, name }) => (
+          <SpotlightCharacterCard
+            key={`spotlight-character-card-${id}`}
+            image={image}
+            name={name}
+          />
+        ))}
         <img
-          src="/background-image.jpeg"
-          style={{
-            position: "absolute",
-            width: "100%",
-            filter: "opacity(30%)",
-            zIndex: -1,
-          }}
+          src="/dj-character-spotlight.png"
+          style={{ height: "40em", alignSelf: "end" }}
         />
-        <img src="/newArrivalTitle.svg" height="auto" width="70%" />
-        <Flex style={{ backgroundColor: "rgba(251, 198, 37, 1)" }} gap="large">
-          {characters.map(({ id, image, name }) => (
-            <SpotlightCharacterCard
-              key={`spotlight-character-card-${id}`}
-              image={image}
-              name={name}
-            />
-          ))}
-        </Flex>
       </Flex>
-    </Content>
+    </Flex>
   );
 };

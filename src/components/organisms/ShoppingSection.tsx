@@ -1,6 +1,5 @@
 import { v4 as uuid } from "uuid";
 import { Flex, Form } from "antd";
-import { Content } from "antd/es/layout/layout";
 import {
   CategoryList,
   CategoryListProps,
@@ -62,36 +61,22 @@ const formInputs: {
   {
     label: "tier",
     name: "tier",
-    component: (
-      <SelectInput options={tierOptions} defaultValue={tierOptions[0].value} />
-    ),
+    component: <SelectInput options={tierOptions} />,
   },
   {
     label: "theme",
     name: "theme",
-    component: (
-      <SelectInput
-        options={themeOptions}
-        defaultValue={themeOptions[0].value}
-      />
-    ),
+    component: <SelectInput options={themeOptions} />,
   },
   {
     label: "timeSort",
     name: "timeSort",
-    component: (
-      <SelectInput options={timeOptions} defaultValue={timeOptions[0].value} />
-    ),
+    component: <SelectInput options={timeOptions} />,
   },
   {
     label: "priceSort",
     name: "priceSort",
-    component: (
-      <SelectInput
-        options={priceOptions}
-        defaultValue={priceOptions[0].value}
-      />
-    ),
+    component: <SelectInput options={priceOptions} />,
   },
 ];
 
@@ -104,27 +89,31 @@ const SearchAndFilter = () => {
   };
 
   return (
-    <Form
-      form={form}
-      initialValues={{
-        searchQuery: "",
-        priceRange: [0, 200],
-      }}
-      layout="vertical"
-      colon={false}
-      onFinish={onFinish}
-    >
-      <Flex flex={2} vertical>
+    <Flex flex={1} vertical>
+      <Form
+        form={form}
+        initialValues={{
+          searchQuery: "",
+          priceRange: [0, 200],
+          theme: themeOptions[0].value,
+          tier: tierOptions[0].value,
+          timeSort: timeOptions[0].value,
+          priceSort: priceOptions[0].value,
+        }}
+        layout="vertical"
+        colon={false}
+        onFinish={onFinish}
+      >
         {formInputs.map(({ label, name, component }) => (
           <FormItem
             key={`form-input-${name}`}
             name={name}
-            label={<strong>{label?.toUpperCase()}</strong>}
+            label={label ? <strong>{label?.toUpperCase()}</strong> : null}
           >
             {component}
           </FormItem>
         ))}
-        <Flex style={{ marginTop: "2em" }} gap={6}>
+        <Flex style={{ marginTop: "2em" }} gap="large">
           <TextButton
             icon={<CloseCircleFilled />}
             variant="text"
@@ -137,12 +126,13 @@ const SearchAndFilter = () => {
             variant="solid"
             color="primary"
             onClick={() => form.submit()}
+            style={{ width: "10em" }}
           >
             Search
           </TextButton>
         </Flex>
-      </Flex>
-    </Form>
+      </Form>
+    </Flex>
   );
 };
 
@@ -154,7 +144,7 @@ const SearchContent = ({
   characters: Character[];
 }) => {
   return (
-    <Flex flex={5} vertical gap={"middle"}>
+    <Flex flex={3} vertical gap={"middle"}>
       <CategoryList {...categoryListProps} />
       <Flex wrap gap="middle">
         {characters.map((character) => {
@@ -202,18 +192,16 @@ export const ShoppingSection = () => {
   const [currentCategory, setCurrentCategory] = useState(Category.COMMON);
 
   return (
-    <Content>
-      <Flex justify="space-between" gap="large">
-        <SearchAndFilter />
-        <SearchContent
-          categoryListProps={{
-            categories: [Category.COMMON, Category.EPIC, Category.RARE],
-            selectedCategory: currentCategory,
-            onCategorySelect: (category) => setCurrentCategory(category),
-          }}
-          characters={characters}
-        />
-      </Flex>
-    </Content>
+    <Flex style={{ margin: "2em 3em" }} justify="center" gap="large">
+      <SearchAndFilter />
+      <SearchContent
+        categoryListProps={{
+          categories: [Category.COMMON, Category.EPIC, Category.RARE],
+          selectedCategory: currentCategory,
+          onCategorySelect: (category) => setCurrentCategory(category),
+        }}
+        characters={characters}
+      />
+    </Flex>
   );
 };
