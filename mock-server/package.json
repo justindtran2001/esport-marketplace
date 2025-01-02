@@ -1,0 +1,13 @@
+{
+  "name": "mock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "mocks-server"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@mocks-server/main": "^4.1.0"
+  }
+}

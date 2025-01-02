@@ -1,5 +1,4 @@
-import { v4 as uuid } from "uuid";
-import { Flex, Form } from "antd";
+import { Flex, Form, Spin } from "antd";
 import {
   CategoryList,
   CategoryListProps,
@@ -14,6 +13,7 @@ import { Category, Character } from "@/data/models";
 import { useState } from "react";
 import { useForm } from "antd/es/form/Form";
 import FormItem from "antd/es/form/FormItem";
+import useCharacters from "@/hooks/useCharacters";
 
 const tierOptions: DefaultOptionType[] = [
   {
@@ -169,39 +169,24 @@ const SearchContent = ({
 
 export const ShoppingSection = () => {
   // TODO: Integrate data from API
-  const [characters] = useState<Character[]>(
-    new Array(5).fill({
-      id: uuid(),
-      name: "Mafia England",
-      category: Category.COMMON,
-      image: {
-        ariaLabel: "mafia-england-img",
-        src: "/mafia-england.png",
-      },
-      price: 1200,
-      author: {
-        id: "author-id-123",
-        name: "Author name 123",
-        profilePic: {
-          ariaLabel: "author-123-img",
-          src: "",
-        },
-      },
-    }),
-  );
+  const [characters, loading] = useCharacters();
   const [currentCategory, setCurrentCategory] = useState(Category.COMMON);
 
+  // if (loading) return <Spin size="large" />;
+
   return (
-    <Flex style={{ margin: "2em 3em" }} justify="center" gap="large">
-      <SearchAndFilter />
-      <SearchContent
-        categoryListProps={{
-          categories: [Category.COMMON, Category.EPIC, Category.RARE],
-          selectedCategory: currentCategory,
-          onCategorySelect: (category) => setCurrentCategory(category),
-        }}
-        characters={characters}
-      />
-    </Flex>
+    <Spin spinning={loading}>
+      <Flex style={{ margin: "2em 3em" }} justify="center" gap="large">
+        <SearchAndFilter />
+        <SearchContent
+          categoryListProps={{
+            categories: [Category.COMMON, Category.EPIC, Category.RARE],
+            selectedCategory: currentCategory,
+            onCategorySelect: (category) => setCurrentCategory(category),
+          }}
+          characters={characters}
+        />
+      </Flex>
+    </Spin>
   );
 };
